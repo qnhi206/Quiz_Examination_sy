@@ -1,0 +1,26 @@
+{
+    "admin": {
+        "id": "001",
+        "fullname": "Nguy\u1ec5n V\u0103n A",
+        "email": "admin@gmail.com",
+        "password": "adminpass",
+        "role": "Admin",
+        "rolelevel": "SuperAdmin"
+    },
+    "teacher": {
+        "id": "002",
+        "fullname": "Nguy\u1ec5n V\u0103n B",
+        "email": "teacher@gmail.com",
+        "password": "teacherpass",
+        "role": "Teacher",
+        "employeecode": "002"
+    },
+    "student": {
+        "id": "003",
+        "fullname": "Nguy\u1ec5n V\u0103n C",
+        "email": "student@gmail.com",
+        "password": "studentpass",
+        "role": "Student",
+        "studentid": "003"
+    }
+}
