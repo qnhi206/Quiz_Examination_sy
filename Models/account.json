@@ -3,7 +3,7 @@
         "id": "001",
         "fullname": "Nguy\u1ec5n V\u0103n A",
         "email": "admin@gmail.com",
-        "password": "adminpass",
+        "password": "713bfda78870bf9d1b261f565286f85e97ee614efe5f0faf7c34e7ca4f65baca",
         "role": "Admin",
         "rolelevel": "SuperAdmin"
     },
@@ -11,7 +11,7 @@
         "id": "002",
         "fullname": "Nguy\u1ec5n V\u0103n B",
         "email": "teacher@gmail.com",
-        "password": "teacherpass",
+        "password": "0acccbba3a8265e79e018127c2a3bc9cad528e542787f810a002c27bc7f81811",
         "role": "Teacher",
         "employeecode": "002"
     },
@@ -19,7 +19,7 @@
         "id": "003",
         "fullname": "Nguy\u1ec5n V\u0103n C",
         "email": "student@gmail.com",
-        "password": "studentpass",
+        "password": "0c706cd9e9c31663612230ff8d74850ca2efdce103dedc77cdd66bf4cfd192ce",
         "role": "Student",
         "studentid": "003"
     }

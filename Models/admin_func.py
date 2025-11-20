@@ -1,8 +1,18 @@
 import json
-import getpass
 import os
-#đường dẫn đến file json
-data_file = r"C:\CNPM\quiz\Models\account.json"
+import hashlib
+
+
+data_file = "account.json"
+
+# Hàm mã hóa mật khẩu
+def hash_password(password):
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+# Hàm kiểm tra mật khẩu
+def verify_password(stored_hash, provided_password):
+    return stored_hash == hash_password(provided_password)
+
 class UserManager:
     def __init__(self, data_file):
         self.data_file = data_file
@@ -45,7 +55,6 @@ class UserManager:
         return self.users.get(username)
 
 class User:
-    # Thêm user_manager để có thể lưu dữ liệu khi cập nhật profile
     def __init__(self, user_manager, username, info):
         self.user_manager = user_manager
         self.username = username 
@@ -55,51 +64,26 @@ class User:
         self.passwordhash = info.get('password') 
         self.role = info.get('role')
 
-    def login(self, username, password):
-        if self.username == username and self.passwordhash == password:
-            print(f"Đăng nhập thành công với vai trò {self.role}.")
-            return True
-        print("Sai username hoặc mật khẩu.")
-        return False
     def updateprofile(self, field, new_value):
-        allowed_fields = ["fullname", "email", "passwordhash"]
-
+        allowed_fields = ["fullname", "email"] # Không cho update pass ở đây để tránh lỗi hash
         if field not in allowed_fields:
-            print("Không được phép cập nhật trường này.")
+            print("Không được phép cập nhật trường này hoặc cần chức năng đổi mật khẩu riêng.")
             return False
         setattr(self, field, new_value)
         self.user_manager.users[self.username][field] = new_value
         self.user_manager.save_users()       
         print(f"Cập nhật {field} thành '{new_value}' thành công.")
         return True
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "fullname": self.fullname,
-            "email": self.email,
-            "password": self.passwordhash,
-            "role": self.role
-        }
 
 class Admin:
     def __init__(self, user_manager):
         self.user_manager = user_manager
+
     def login(self, username, password):
-        user_info = self.user_manager.get_user_data(username)
-        
-        if user_info and user_info.get('role') == 'Admin':
-            stored_password = user_info.get('password')
-            
-            if stored_password == password:
-                print(f"\nĐăng nhập thành công với vai trò Admin.\n")
-                self.admin_menu()
-                return True
-            else:
-                print("\nMật khẩu không chính xác.\n")
-                return False
-        
-        print("\nTên đăng nhập không tồn tại hoặc không phải là Admin.\n")
-        return False
+        # Logic login đã được xử lý ở main, hàm này chủ yếu để gọi menu
+        print(f"\nĐăng nhập thành công với vai trò Admin.\n")
+        self.admin_menu()
+        return True
 
     def admin_menu(self):
         while True:
@@ -124,41 +108,31 @@ class Admin:
                 self.user_manager.save_users()
                 print("\nĐã thoát. Dữ liệu đã được lưu vào JSON.\n")
                 return
-
             else:
                 print("Lựa chọn không hợp lệ.\n")
+
     def assign_role(self):
         username = input("Nhập username cần cập nhật role: ")
-
         if username not in self.user_manager.users:
             print("User không tồn tại.\n")
             return
-
         new_role = input("Role mới (Student/Teacher/Admin): ").strip().capitalize()
-
         if new_role not in ["Student", "Teacher", "Admin"]:
              print("Vai trò không hợp lệ.\n")
              return
-             
         self.user_manager.users[username]["role"] = new_role
         self.user_manager.save_users()
         print(f"Đã gán role '{new_role}' cho user '{username}' thành công.\n")
+
     def delete_user(self):
         username = input("Nhập username cần xóa: ")
-
         if username not in self.user_manager.users:
             print("User không tồn tại!\n")
             return
-
         confirm = input(f"Chắc chắn muốn xóa user '{username}'? (y/n): ")
-
         if confirm.lower() == "y":
             del self.user_manager.users[username]
             self.user_manager.save_users()
             print(f"Đã xóa user '{username}' thành công!\n")
         else:
             print("Đã hủy thao tác xóa!\n")
-
-
-
-
